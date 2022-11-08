@@ -1,6 +1,6 @@
 const express = require('express');
 const { users: usersCtrl } = require('../../controllers');
-const { validateBody, authenticate } = require('../../middlewares');
+const { validateBody, authenticate, upload } = require('../../middlewares');
 const { ctrlWrapper } = require('../../helpers');
 const { schemas } = require('../../models/user');
 
@@ -27,6 +27,13 @@ router.patch(
   authenticate,
   validateBody(schemas.updateSubscription),
   ctrlWrapper(usersCtrl.updateSub)
+);
+
+router.patch(
+  '/avatars',
+  authenticate,
+  upload.single('avatar'),
+  ctrlWrapper(usersCtrl.updateAvatar)
 );
 
 module.exports = router;
